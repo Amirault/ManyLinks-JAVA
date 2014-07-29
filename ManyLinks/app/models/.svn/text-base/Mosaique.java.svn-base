@@ -1,0 +1,62 @@
+package models;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.ManyToMany;
+import javax.persistence.Entity;
+
+
+import play.db.jpa.Model;
+
+/**
+ * 
+ */
+
+/**
+ * @author AMIRAULT - PHAM
+ *
+ */
+@Entity
+public class Mosaique extends Model {
+	
+	public String nom;
+	
+	public Date timeStamp;
+	
+	public Statut statut;
+	
+	public Mosaique(String nom, Statut statut) {
+		super();
+		this.nom = nom;
+		this.statut = statut;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public Date getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(Date timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
+	public Statut getStatut() {
+		return statut;
+	}
+
+	public void setStatut(Statut statut) {
+		this.statut = statut;
+	}
+	
+	
+	
+}

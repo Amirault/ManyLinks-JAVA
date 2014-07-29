@@ -1,0 +1,36 @@
+#{extends 'main.html' /}
+#{if !connected}
+<!-- ========= PAGE DE CONNEXION ================= -->
+<!-- formulaire de connnexion : -->
+<div class="row-fluid margin">
+	<div class="span4"></div>
+	<div class="span4 block-content padding">
+		<form action="@{Application.authentification}" method="post">
+			<h2 class="form-signin-heading">Log in:</h2>
+			<input type="text" class="input-block-level" id="email" name="email"
+				placeholder="Email adress"> <input type="password"
+				class="input-block-level" id="mdp" name="mdp" placeholder="Password">
+			<button class="btn btn-large btn-block btn-primary" type="submit">Log
+				in</button>
+			<div class="row-fluid">
+				<div class="span6">
+					<p>
+						<i class="icon-black icon-exclamation-sign"></i><strong>
+							 Not member yet?</strong>
+					</p>
+					<p>#{a @Application.inscription()}Create one now!#{/a}</p>
+				</div>
+				<div class="span6">
+					<p>
+						<i class="icon-black icon-exclamation-sign"></i><strong>
+							Forget password?</strong>
+					</p>
+					<p>Reset it now!
+					<p>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="span4"></div>
+</div>
+#{/if}

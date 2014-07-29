@@ -1,0 +1,13 @@
+package models;
+
+/**
+ * 
+ */
+
+/**
+ * @author AMIRAULT - PHAM
+ *
+ */
+public enum TypeMembre {
+	Administrateur, Utilisateur
+}

@@ -1,0 +1,64 @@
+<!-- ======================== FORMULAIRE D'AJOUT DE FAVORIS ============================== -->
+<div id="modalPublishBookmark" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">	
+	<!-- ================== ENTETE DU FORMULAIRE ====================== -->
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		<h3 id="myModalLabel">Add Bookmarks</h3>
+	</div>
+	<!-- ============================================================== -->
+	<!-- ================== CORPS DU FORMULAIRE ====================== -->
+	<form class="form" name="AddFavoris" id="formPublishBookmark" >
+		<div class="modal-body">
+			<!-- Champs de saisie de l'url : -->
+			<br />
+			<label for="URL">URL of your bookmark <i>(Required)</i> :</label>							
+			<span Name="URL" class="contentPanel">
+				<input id="searchURL" name="url" type="text" class="span5" placeholder="URL of your bookmark" data-provide="typeahead" data-items="4" autocomplete="off" required />
+			</span>
+			<br />
+			<!-- Champs de saisie du nom du favoris ///// todo : completer automatiquement avec le vrai titre -->
+			<label for="TextName">Name :</label>
+			<input name="name" id="TextName" type="text" class="span5" placeholder="Title of your bookmark">
+			
+			<!-- Bouton radio Public / Perso -->
+			<label for="RadioButtons">Share your link ?</label>
+			<div Name="RadioButtons">
+					<table>
+						<tr><td><input type="radio" name="isPublic" id="RdPublic" value="true" checked /></td><td>Yes</td><td><input type="radio" name="isPublic" id="RdPrive" value="false" /></td><td>No</td></tr>
+					</table>
+			</div>
+			<br />
+			<br />
+			</form>
+		<!-- =================== BAS DU FORMULAIRE ======================== -->
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<input type="submit" id="publishBookmark" value="Add Bookmark" class="btn btn-success" />
+		</div>
+		<!-- ============================================================== -->
+	
+</div>
+<script>
+$("#publishBookmark").click(function(evt) {
+	var URL = document.forms["AddFavoris"]["url"].value;
+	if (validUrl(URL)){// On check si le formulaire est valide avant de le soumettre
+		$.post("@{Bookmarks.publicationFavori}",$("#formPublishBookmark").serialize(),
+				  function(data,status){
+				  	if (data == "SUCCESS"){
+			    		console.log(data);
+			    		$('#modalPublishBookmark').modal('hide');
+				  	}
+				  	else
+			  		{
+			  			alert(data);
+			  		}
+			});
+	}
+	else{
+		alert("L'URL saisie n'est pas valide !\n\nVeuillez saisir une adresse URL correct.");
+	}
+	
+	return false;
+});
+
+</script>

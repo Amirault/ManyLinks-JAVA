@@ -1,0 +1,26 @@
+package models;
+
+import javax.persistence.*;
+
+import java.util.*;
+
+import play.*;
+import play.db.jpa.*;
+import play.libs.*;
+import play.data.validation.*;
+
+/**
+ * 
+ */
+
+/**
+ * @author AMIRAULT - PHAM
+ *
+ */
+@Entity
+public class Message extends Model{
+	
+	protected Date timeStamp;
+	protected String sujet;
+	protected String contenu;
+}

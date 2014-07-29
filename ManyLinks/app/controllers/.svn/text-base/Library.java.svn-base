@@ -1,0 +1,98 @@
+package controllers;
+
+import models.*;
+import notifiers.*;
+import play.*;
+import play.data.validation.Email;
+import play.data.validation.Equals;
+import play.data.validation.MinSize;
+import play.data.validation.Required;
+import play.mvc.*;
+
+import java.util.*;
+
+public class Library extends Application {
+	
+	public static void index() {
+    	Member membre = connectedUser();
+        List<Link> listOfLinks = Link.findMostRecent(Statut.partage);
+		List<Link> listOfLinksTopAjout = Link.findTopAjout();
+		List<Link> listOfLinksTopRate = Link.findTopRate();
+       render(listOfLinksTopAjout,listOfLinks, listOfLinksTopRate);
+    }
+	public static void vote(@Required Long id,@Required Integer val) {
+		if(validation.hasErrors()){
+		   params.flash(); // add http parameters to the flash scope
+		   validation.keep(); // keep the errors for the next request
+	       renderText("ERROR");
+		}
+		else{
+    		Link link = Link.findById(id);
+    		if (connectedUser().hasRateLink(link.getId())){;
+    			renderText("Votre vote à déjà été pris en compte");
+    		}
+    		else
+    		{
+    			Rate rate = new Rate(val,link,connectedUser());
+		    	//favori.setNote(val);
+		    	//favori.save();
+		    	rate.save();
+		    	renderText("SUCCESS");
+    		}
+    	}
+    }
+	public static void listOfComment(@Required long idLink){
+		if(validation.hasErrors()){
+		   params.flash(); // add http parameters to the flash scope
+		   validation.keep(); // keep the errors for the next request
+	       renderText("ERROR");
+		}
+		else{
+			List<Comment> listOfComment = Comment.findByFavori(idLink);
+			if(listOfComment.size() > 0){
+				render(listOfComment);
+			}
+			renderText("No Comments");
+		}
+	}
+	public static void listOflinks(@Required String keyword){
+		List<Link> listOfLinks;
+		if(keyword == null || keyword.isEmpty()){
+			listOfLinks = Link.findMostRecent(Statut.partage);
+		}
+		else{
+			listOfLinks = Link.findByKeyword(keyword);	
+		}
+		render(listOfLinks);
+	}
+	
+	public static void listOflinksJSON(@Required String keyword, int limit){
+		List<Link> listOfLinks = Link.findByKeywordLimit(keyword, limit);
+		renderJSON(listOfLinks);
+	}
+	
+	public static void listOfLinksTopAjout(){
+		List<Link> listOfLinksTopAjout = Link.findTopAjout();
+		render(listOfLinksTopAjout);
+	}
+	public static void listOfLinksTopRate(){
+		List<Link> listOfLinksTopRate = Link.findTopRate();
+		render(listOfLinksTopRate);
+	}
+	public static void setComment(@Required String contenu, @Required long idLink){
+		if(validation.hasErrors()){
+		   params.flash(); // add http parameters to the flash scope
+		   validation.keep(); // keep the errors for the next request
+	       renderJSON(false);
+		}
+		else{
+			Link link = Link.findById(idLink);
+	    	Comment c = new Comment(new Date(), contenu,link , connectedUser());
+	    	link.getCommentList().add(c);
+	    	connectedUser().getCommentList().add(c);
+	    	c.save();
+	    	renderJSON(true);
+		}
+		
+    }
+}

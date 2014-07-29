@@ -1,0 +1,84 @@
+/**
+ * 
+ */
+package models;
+
+import play.db.jpa.GenericModel;
+import play.db.jpa.Model;
+
+import javax.persistence.*;
+
+/**
+ *  @author AMIRAULT - PHAM
+ *
+ */
+@Entity
+@IdClass(RateId.class)
+public class Rate extends GenericModel {
+	
+	@Id
+	public long linkId;
+	@Id
+	public long memberId;
+	
+	@ManyToOne
+	@JoinColumn(name = "linkId", updatable = false, insertable = false)
+	public Link link;
+	
+	@ManyToOne
+	@JoinColumn(name = "memberId", updatable = false, insertable = false)
+	public Member member;
+	
+	@Column
+	public int val;
+	/**
+	 * 
+	 */
+	public Rate(int val,Link link,Member member) {
+		super();
+		this.val = val;
+		this.link = link;
+		this.member = member;
+		this.memberId = member.getId();
+		this.linkId = link.getId();
+		this.member.getRateList().add(this);
+		this.member.save();
+		this.link.getRateList().add(this);
+		this.link.setRate(val);
+		this.link.save();
+	}
+	public long getLinkId() {
+		return linkId;
+	}
+	public void setLinkId(long linkId) {
+		this.linkId = linkId;
+	}
+	public long getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(long memberId) {
+		this.memberId = memberId;
+	}
+	public Link getLink() {
+		return link;
+	}
+	public void setLink(Link link) {
+		this.link = link;
+	}
+	public Member getMember() {
+		return member;
+	}
+	public void setMember(Member member) {
+		this.member = member;
+	}
+	public int getVal() {
+		return val;
+	}
+	public void setVal(int val) {
+		this.val = val;
+	}
+	
+	
+	
+	
+}

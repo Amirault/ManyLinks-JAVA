@@ -1,0 +1,49 @@
+<!-- ======================== FORMULAIRE D'AJOUT DE CATEGORIE ============================== -->
+<div id="myModalCategorie" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabelCategorie" aria-hidden="true">
+	<!-- ================== ENTETE DU FORMULAIRE ====================== -->
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 id="myModalLabelCategorie">Add a Category of bookmarks</h3>
+	</div>
+	<!-- ============================================================== -->
+	<form class="form" id="formPublishCategory">
+		<!-- ================== CORPS DU FORMULAIRE ====================== -->
+		<div class="modal-body">
+		<!-- Champs de saisie du nom du favoris -->
+		<label for="TextName">Name of your new category <i>(required)</i> :</label>
+		<input name="name" id="TextName" type="text" class="span5" placeholder="Category name" required>
+		<br />
+		<textarea id="Description" name="description" rows="3" placeholder="Your description here"></textarea>
+		<br />
+		<br />
+		<input type="hidden" name="Form" value="AddCat" />
+		<input type="hidden" name="Page" value="<?php echo $_SERVER['PHP_SELF']; ?>" />
+		<br />
+		<br />	
+		</div>	
+		<!-- ============================================================== -->			
+		<!-- =================== BAS DU FORMULAIRE ======================== -->
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-success" id="publishCategory" type="submit">Add category</button>
+		</div>
+		<!-- ============================================================== -->
+	</form>
+</div>
+<script>
+$("#publishCategory").click(function(evt) {
+	$.post("@{Bookmarks.publicationCategory}",$("#formPublishCategory").serialize(),
+			  function(data,status){
+			  	if (data == "SUCCESS"){
+		    		console.log(data);
+		    		$('#myModalCategorie').modal('hide');
+			  	}
+			  	else
+		  		{
+		  			alert(data);
+		  		}
+		});
+	return false;
+});
+
+</script>

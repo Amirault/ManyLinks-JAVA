@@ -1,0 +1,17 @@
+<div id="comments" idLink="" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="comments" aria-hidden="true">	
+	<!-- ================== ENTETE DU FORMULAIRE ====================== -->
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		<h3>Comments</h3>
+	</div>
+	<div id="listOfComment">
+	</div>
+	<!-- ============================================================== -->
+	<!-- ================== CORPS DU FORMULAIRE ====================== -->
+	
+	<form class="form" id="form-comment" name="comments"  >
+		<!-- Champs de saisie du nom du favoris -->
+		<textarea id="commentText" rows="3" placeholder="Your comment here"></textarea>
+		<input type="submit" value="Post" id="addComment" class="btn btn-success" />
+	</form>
+</div>

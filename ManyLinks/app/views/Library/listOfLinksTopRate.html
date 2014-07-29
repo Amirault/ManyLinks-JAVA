@@ -1,0 +1,8 @@
+<!-- ##SAMPLE LIST TOP RATE## -->
+#{list items:listOfLinksTopRate, as:'favori'}
+	<tr id="bookmark-${favori.id}">
+		<td><img src=${favori.icone} alt="icon"> <a href=${favori.url} target="_blank">${favori.title}</a></td>
+		<td><span class="badge note${favori.id}">${favori.rate}</span></td>
+	</tr>
+#{/list}
+<!-- ##FIN SAMPLE LIST TOP RATE## -->

@@ -1,0 +1,118 @@
+#{extends 'main.html' /}
+		<br />
+		<form id="compte_info" name="envoi" method="post" enctype="multipart/form-data">
+			<div class="row-fluid">
+				<div class="span4 transparent">
+				</div>
+				<div class="span4 block-content transparent">
+					<div class="row-fluid block-header">
+						<h2>Your account</h2>
+					</div>
+					<div class="row-fluid block-body">
+							<div class="span2">
+							</div>
+							<div class="span8">
+								<div class="row-fluid">
+									<label>Email : </label>
+									<br />
+									<p>${membre.email}</p>
+									<br />
+									<br />
+									<label for="pseudo"> Nickname: </label><input name="pseudo" type="text" id="pseudo" size="30" value="${membre.pseudo}" />
+									<label for="ancienMdp">Current password: </label>
+									<input name="ancienMdp" type="password" class="" id="ancienMdp" size="30" />
+									<br />
+									<br />
+									<label for="mdp">New password: </label>
+									<input name="mdp" type="password" class="" id="mdp" size="30" />
+									<br />
+									<br />
+									<label for="mdp2">Confirm new password: </label>
+									<input name="mdp2" type="password" class="" id="mdp2" size="30" />
+								</div>
+							</div>
+							<div class="span2">
+							</div>
+					</div>
+					<div class="row-fluid block-footer">
+						<div class="span6 btn-footer">
+							<span id="Modif" name="Modif" role="button">
+								Change
+							</span>
+						</div>
+						<div class="span6 btn-footer">
+							<span name="BtnSupp" class="dropdown-toggle" role="button" data-toggle="modal" href="#myModalSupression">
+								Delete
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="span4 transparent">
+				</div>
+			</div>
+		</form>
+<!-- ## MODAL ## -->
+<div id="myModalSupression" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabelSupression" aria-hidden="true">
+	<!-- ================== ENTETE DU FORMULAIRE ====================== -->
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+		<h3 id="myModalLabelSupression">Delete your account</h3>
+	</div>
+	<!-- ============================================================== -->
+	<!-- ================== CORPS DU FORMULAIRE ====================== -->
+	<div class="modal-body">
+		<form id="compte_delete" name="envoi" method="post" enctype="multipart/form-data">
+				<table class="table table-bordered table-striped table-condensed">
+					<caption>
+					<h4>Please don't go!</h4>
+					</caption>
+					<thead>
+					  <tr>
+						<th>Are you sure?</th>
+					  </tr>
+					</thead>
+					<tr>
+					  <td class="legende"><div align="left">All your data will be deleted!</div></td>
+					</tr>
+					<tr>
+					  <td><div align="left">
+						<button id="Delete" name="Delete" class="btn btn-success" accesskey="s">Yes, I'm sure</button>
+					  </div></td>
+					</tr>
+				</table>
+			</form>
+	</div>
+</div>
+<!-- ## MODAL ## -->
+<script>
+$(function(){
+	$("#Modif").click(function(){
+		$.post("modifCompteMembre",$("#compte_info").serialize(),
+			  function(data,status){
+				if (data == "success"){
+					alert("Your information has been updated");
+			  	}
+			  	else if (data == "password")
+		  		{
+		  			alert("Wrong current password!");
+		  		}
+			  	else
+		  		{
+			  		alert("Please correct these errors!");
+		  		}
+			  }
+		);
+		return false;
+	});
+	
+	$("#Delete").click(function(){
+		$.post("supprimerCompteMembre",
+			  function(data,status){
+				alert("We'll miss you :(");
+				window.location.href="@{Application.index}";
+			  }
+		);
+		return false;
+	});
+});
+</script>

@@ -1,0 +1,7 @@
+#{list items:listOfComment, as:'comment'}
+	<div>
+		${comment.member.pseudo}<br/>
+		${comment.timeStamp}<br/>
+		${comment.contenu}
+	</div>
+#{/list}

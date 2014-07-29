@@ -1,0 +1,192 @@
+#{extends 'main.html' /}
+#{if connected}
+<!-- ##PAGE BOOKMARK## -->
+<div class="row-fluid block-header">
+	<h3>> My Bookmarks</h3>
+</div>
+<div class="row-fluid">
+	<div class="span3"></div>
+	<div class="span2"><a data-toggle="modal" href="#myModalCategorie" ><i class="icon-black icon-plus"> </i>Category</a></div>
+	<div class="span2"><a href="#" ><i class="icon-black icon-plus"> </i>Launcher</a></div>
+	<div class="span2"><a data-toggle="modal" href="#myModalImporter" ><i class="icon-circle-arrow-down"></i> <i>Upload bookmarks</i></a></div>
+	<div class="span3"></div>
+</div>
+<div class="row-fluid">
+	<div class="span1 transparent">
+	</div>
+	<div class="span10 block-content transparent">	
+		<div class="row-fluid block-body">
+			<div id="ContenerTable">
+				<table class="table">
+					<!-- Header contenant les diff������������������rentes options possibles : -->
+					<tr class="alert alert-success">	
+						<!-- Checkbox : (tout selectionner) -->
+						<th>
+							<input type="checkbox" name="AllCheck" id="checkbox-check-all"/>
+						</th>
+						
+						<!-- Boutons d'edition et de suppression -->
+						<th colspan="2">
+							<button class="btn btn-inverse " id="btn-delete-selection"><i class="icon-remove icon-white"></i> Delete</button>
+						</th>
+						
+						<th></th>
+						<!-- Combobox choix : -->
+						<th id="EnteteAssociation" >
+							<div class="pull-right">
+								<select id="selectCatAssoc" name="AssocCategorie" class="input-medium">
+									<option value="Default">Associate category</option>
+									#{list items:membre.getPrivateCategoryList(), as:'category'}
+										#{if category.getCategory().getName() != "root"}
+											<option value="${category.getCategoryId()}">${category.getCategory().getName()}</option>
+										#{/if}
+									#{/list}
+								</select>
+								<button class="btn btn-inverse" id="assocToCat" >Ok</button>
+							</div>
+						</th>
+					</tr>
+					<!-- Affichage du contenu : -->
+					#{list items:membre.getPrivateCategoryList(), as:'category'}
+						#{if category.getCategory().getName() != "root"}
+								<tr class="alert alert-info"><td class="filterCategory" idCat="${category.getCategory().getId()}"><i class="icon-folder-open icon-white"></i> ${category.getCategory().getName()}</td></tr>
+								#{list items:category.getCategory().getBookmarkList(), as:'favori'}
+								<tr id="bookmark-${favori.getLink().getId()}">
+									<td><input type="checkbox" name="SelectFav[]" value="${favori.getLink().getId()}"/></td>
+									<td><img src="${favori.getLink().getIcone()}" alt="icon" /><a href="${favori.getLink().getUrl()}"> ${favori.getName()}</a></td>
+									<td>#{if favori.getLink().getStatut().toString() == "partage"}shared #{/if}#{else}private#{/else}</td>
+									<td><button class="btn edit-bookmark" url-bookmark="${favori.getLink().getUrl()}" name-bookmark="${favori.getName()}" ><i class="icon-edit"></i></button></td>
+									<td class="remove-bookmark cursor-pointer" id-bookmark="${favori.getLink().getId()}"><i class="icon-remove"></i></td>
+								</tr>
+								#{/list}
+						#{/if}
+						#{list items:category.getCategory().getBookmarkList(), as:'favori'}
+						<tr>
+							<td><input type="checkbox" name="SelectFav[]" value="${favori.getLink().getId()}"/></td>
+							<td><img src=${favori.getLink().getIcone()} alt="icon" /> <a href="${favori.getLink().getUrl()}">${favori.getName()}</a></td>
+							<td>#{if favori.getLink().getStatut().toString() == "partage"}shared #{/if}#{else}private#{/else}</td>
+							<td><button class="btn edit-bookmark" url-bookmark="${favori.getLink().getUrl()}" name-bookmark="${favori.getName()}" ><i class="icon-edit"></i></button></td>
+							<td class="remove-bookmark cursor-pointer" id-bookmark="${favori.getLink().getId()}"><i class="icon-remove"></i></td>
+						</tr>
+						#{/list}
+					#{/list}
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="span1">
+	</div>
+</div>			
+#{/if}
+#{include 'Favoris/modalModificationFavori.html' /}
+#{include 'Favoris/modalAjoutCategory.html' /}
+<script>
+$(function(){
+	$("#checkbox-check-all").click(function(){
+		// permet la selection de toutes les checkbox
+		$("input[name='SelectFav[]']").each(function(){
+			this.checked = $('#checkbox-check-all').is(':checked');
+		});
+		/*for(var i = 0; i < document.getElementsByName("SelectCat[]").length; i++)
+		{
+			document.getElementsByName("SelectCat[]")[i].checked = $('#checkbox-check-all').is(':checked');
+		}
+		for(var i = 0; i < document.getElementsByName("SelectMosaique[]").length; i++)
+		{
+			document.getElementsByName("SelectMosaique[]")[i].checked = $("#checkbox-check-all").is(':checked');
+		}*/
+	});
+	$("#assocToCat").click(function(){
+		var idCat = $( "#selectCatAssoc" ).val();
+	});
+	$("#btn-delete-selection").click(function(){
+		
+		/*if (document.getElementsByName("SelectCat[]").length >= 1)
+		{
+			for(var i = 0; i < document.getElementsByName("SelectCat[]").length; i++)
+			{
+				if (document.getElementsByName("SelectCat[]")[i].checked)
+				{
+					flag=true;
+				}
+			}
+		}
+		if (document.getElementsByName("SelectMosaique[]").length >= 1)
+		{
+			for(var i = 0; i < document.getElementsByName("SelectMosaique[]").length; i++)
+			{
+				if (document.getElementsByName("SelectMosaique[]")[i].checked)
+				{
+					flag=true;
+				}
+			}
+		}*/
+		
+		if ($("input[name='SelectFav[]']:checked").length)// verification qu'une checkbox au moins est check�
+		{
+			if (confirm("Remove all selected bookmarks ?"))
+			{
+				// appel de la fonction pour la suppression
+				$("input[name='SelectFav[]']:checked").each(function(){
+					console.log('id='+$(this).val());
+				    	$.ajax({
+							type : 'POST',
+						    url : "@{Bookmarks.deleteBookmark}",
+						    data : {"id":$(this).val()},
+						    dataType: "json",
+						    success : function(data) {
+						    	$("#bookmark-"+data).remove();
+						    },
+						    error : function(err) {
+						    	console.log(err);
+						    	alert(err);
+						        // ...
+						    }
+						});
+				});
+			}
+		}
+		else 
+		{
+			alert("Aucun �lement s�lectionn�");
+		}
+		
+		return false;
+		
+	});
+	$(".remove-bookmark").click(function(){
+		if (confirm("Remove the selected bookmark ?"))
+		{
+			var id =$(this).attr("id-bookmark");
+			$.ajax({
+				type : 'POST',
+			    url : "@{Bookmarks.deleteBookmark}",
+			    data : {"id":id},
+			    dataType: "json",
+			    success : function(data) {
+			    	$("#bookmark-"+data).remove();
+			    },
+			    error : function(err) {
+			    	console.log(err);
+			    	alert(err);
+			        // ...
+			    }
+			});
+		}
+	});
+	$(".edit-bookmark").click(function(){
+		$("form[name='ModifFavoris'] #UrlModif").html("<strong>"+$(this).attr("url-bookmark")+"</strong>");
+		$("form[name='ModifFavoris'] :input[name='NomFav']").val($(this).attr("name-bookmark"));	
+		//document.forms["ModifFavoris"]["UrlFav"].value = this.attr("url-bookmark").val();	
+		$("#myModalModifFav").modal('show');
+		//return false;
+	});
+
+	//$('.edit-launcher').click(function(){
+//		document.location.href = 'Mosaique.php?disp='+document.getElementsByName("SelectMosaique[]")[index].value;
+	//}
+
+})
+
+</script>	
+<!-- ##FIN PAGE BOOKMARK## -->

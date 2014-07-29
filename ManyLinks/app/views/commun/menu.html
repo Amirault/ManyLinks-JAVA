@@ -1,0 +1,57 @@
+<div class="navbar ">
+	<div class="navbar-inner">
+		<ul class="nav">
+			<li>
+				<a href="@{Bookmarks.index}"><i class="icon-bookmark"></i> Bookmarks</a>
+			</li>
+			<li class="btn btn-success btn_ajout dropdown-toggle" role="button" data-toggle="modal" href="#modalPublishBookmark">
+				<i class="icon-white icon-plus"></i>
+			</li>
+			<li>
+				<a href="#"><i class="icon-time"></i> History</a>
+			</li>
+			<li>
+				<a href="#"><i class="icon-share"></i> Launcher</a>
+			</li>
+			<li>
+				<a href="@{Library.index}"><i class="icon-search"></i> Library</a>
+			</li>
+		</ul>
+						
+		<ul class="nav pull-right">
+			<li>
+				<a href="@{Application.accueil}"><i class="icon-home"></i>  Home</a>
+			</li>
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> Me</b></a>
+				<ul class="dropdown-menu" role="menu">
+					<li role="menuitem"><a href="@{Membres.gestionCompte}"><span class="icon-briefcase"></span> My account</a></li>
+					<li role="menuitem"><a href="@{Application.deconnexionUser}"><i class="icon-off"></i> Log out</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#">Contact</a>
+			</li>
+		</ul>	
+	</div>
+</div>
+#{include 'Favoris/modalAjoutFavori.html' /}	
+<!--  <?php
+	if (isset($_GET['Err']))
+	{
+?>
+	<div id="MsgAlert" class="error message">
+			 <i class="icone-remove"></i><p><?php echo mysql_real_escape_string(htmlspecialchars($_GET['Err'])); ?><a onclick="closeAlert('MsgAlert')" href="#"> -> fermer</a></p>
+	</div>
+<?php
+	}
+	else if (isset($_GET['Success']))
+	{
+?>
+	<div id="MsgAlert" class="success message">
+			 <p><?php echo mysql_real_escape_string(htmlspecialchars($_GET['Success'])); ?><a onclick="closeAlert('MsgAlert')" href="#"> fermer le message</a></p>
+	</div>
+<?php
+	}
+?>
+</div>-->

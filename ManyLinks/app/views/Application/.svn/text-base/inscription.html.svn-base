@@ -1,0 +1,29 @@
+#{extends 'main.html' /}
+#{if !connected}
+<!-- ## PAGE D'INSCRIPTION ## -->
+<div class="row-fluid margin">
+	<div class="span4"></div>
+	<div class="span4 block-content padding">
+		<!-- formulaire d'inscription : -->
+		<form id="inscription" action="@{Application.validationInscription}"
+			method="POST" accept-charset="${_response_encoding}">
+			<h3 class="form-signin-heading">Sign in then save your links !</h3>
+			<input id="Pseudo" name="pseudo" type="text"
+				class="input-block-level" placeholder="nickname" required> <span
+				class="error">#{error 'email' /}</span> <input id="Email"
+				name="email" type="text" class="input-block-level"
+				placeholder="Your email adress" required> <span
+				class="error">#{error 'email' /}</span> <input id="Mdp" name="mdp"
+				type="password" class="input-block-level" placeholder="Password"
+				required> <span class="error">#{error 'email' /}</span> <input
+				id="ConfMdp" name="mdp2" type="password" class="input-block-level"
+				placeholder="Confirm your password" required> <input
+				class="btn btn-large btn-block  btn-primary" type="submit"
+				value="Create account" /> <span class="error">#{error 'email'
+				/}</span>
+		</form>
+	</div>
+	<div class="span4"></div>
+</div>
+<!-- ## PAGE D'INSCRIPTION ## -->
+#{/if}

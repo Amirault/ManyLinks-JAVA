@@ -1,0 +1,176 @@
+package models;
+/**
+ * 
+ */
+import javax.persistence.*;
+
+import java.util.*;
+
+import play.*;
+import play.db.jpa.*;
+import play.libs.*;
+import play.data.validation.*;
+/**
+ * @author AMIRAULT - PHAM
+ *
+ */
+@Entity
+public class Member extends Model{
+	@Email
+    @Required
+	protected String email;
+	@Required
+	@MaxSize(15)
+    @MinSize(4)
+    @Match(value="^\\w*$", message="Not a valid username")
+	protected String pseudo;
+	@Required
+	@Password
+	protected String mdpEncoded;
+	@Required
+	protected TypeMembre type;
+	
+	@OneToMany(mappedBy="member", cascade=CascadeType.ALL)
+	public List<PrivateCategory> privateCategoryList;
+	
+	@OneToMany(mappedBy="member", cascade=CascadeType.ALL)
+	public List<Bookmark> bookmarkList;
+	
+	@OneToMany(mappedBy="member", cascade=CascadeType.ALL)
+	public List<Rate> rateList;
+	
+	@OneToMany(mappedBy="member", cascade=CascadeType.ALL)
+	public List<Comment> commentList;
+	
+	
+	public String needConfirmation;
+
+	/**
+	 * @param email
+	 * @param pseudo
+	 * @param mdp
+	 * @param type
+	 */
+	public Member(String email, String pseudo, String mdp, TypeMembre type) {
+		this.email = email;
+		this.pseudo = pseudo;
+		this.mdpEncoded = Codec.hexMD5(mdp);
+		this.type = type;
+		this.privateCategoryList = new ArrayList<PrivateCategory>();
+		this.bookmarkList = new ArrayList<Bookmark>();
+		this.rateList = new ArrayList<Rate>();
+		this.commentList = new ArrayList<Comment>();
+	}
+	public boolean checkPassword(String password) {
+        return mdpEncoded.equals(Codec.hexMD5(password));
+    }
+	public static Member findByEmail(String email) {
+        return find("email", email).first();
+    }
+	public static List<Member> findAll(int page, int pageSize) {
+        return Member.all().fetch(page, pageSize);
+    }
+	public static Member findByRegistrationUUID(String uuid) {
+        return find("needConfirmation", uuid).first();
+    }
+	
+	public boolean hasBookmark(String url){
+		if(Link.findByURL(url)!=null)
+		{
+			if (Bookmark.count("byMemberIdAndLinkId", this.id,Link.findByURL(url).getId()) == 0){
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+	public boolean hasRateLink(Long idLink){
+		if (Rate.count("byMemberIdAndLinkId", this.id,idLink) == 0){
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "Membre [id=" + id + ", email=" + email + ", pseudo=" + pseudo
+				+ ", mdpEncoded=" + mdpEncoded + ", type=" + type
+				+ ", needConfirmation=" + needConfirmation + "]";
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPseudo() {
+		return pseudo;
+	}
+
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
+
+	public String getMdpEncoded() {
+		return mdpEncoded;
+	}
+
+	public void setMdpEncoded(String password) {
+		this.mdpEncoded = Codec.hexMD5(password);
+	}
+
+	public TypeMembre getType() {
+		return type;
+	}
+
+	public void setType(TypeMembre type) {
+		this.type = type;
+	}
+
+	public String getNeedConfirmation() {
+		return needConfirmation;
+	}
+
+	public void setNeedConfirmation(String needConfirmation) {
+		this.needConfirmation = needConfirmation;
+	}
+	public List<Comment> getCommentList() {
+		return commentList;
+	}
+	public void setCommentList(List<Comment> commentList) {
+		this.commentList = commentList;
+	}
+	public List<Bookmark> getBookmarkList() {
+		return bookmarkList;
+	}
+	public void setBookmarkList(List<Bookmark> bookmarkList) {
+		this.bookmarkList = bookmarkList;
+	}
+	public List<PrivateCategory> getPrivateCategoryList() {
+		return privateCategoryList;
+	}
+	public void setPrivateCategoryList(List<PrivateCategory> privateCategoryList) {
+		this.privateCategoryList = privateCategoryList;
+	}
+	public List<Rate> getRateList() {
+		return rateList;
+	}
+	public void setRateList(List<Rate> rateList) {
+		this.rateList = rateList;
+	}
+	
+	
+	
+}

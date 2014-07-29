@@ -1,0 +1,51 @@
+package controllers;
+import models.*;
+import notifiers.*;
+import play.*;
+import play.data.validation.Email;
+import play.data.validation.Equals;
+import play.data.validation.MinSize;
+import play.data.validation.Required;
+import play.libs.Codec;
+import play.mvc.*;
+
+import java.util.*;
+
+public class Membres extends Application {
+	
+	public static void gestionCompte() {
+		Member membre = connectedUser();
+        render(membre);
+    }
+	
+	public static void modifCompteMembre(@Required @MinSize(4) String pseudo,@Required String ancienMdp, @MinSize(3) String mdp, @Equals("mdp") String mdp2){
+		if (validation.hasErrors()) {
+            validation.keep();
+            params.flash();
+            flash.error("Please correct these errors!");
+            renderText("error");
+        }
+		else
+		{
+			Member membre = connectedUser();
+			if (Codec.hexMD5(ancienMdp).equals(membre.getMdpEncoded()))
+			{
+				membre.setPseudo(pseudo);
+				membre.setMdpEncoded(mdp);
+				membre.save();
+				renderText("success");
+			}
+			else
+			{
+				renderText("password");
+			}
+		}
+	}
+	
+	public static void supprimerCompteMembre() {
+		Member membre = connectedUser();
+		membre.delete();
+		session.clear();
+    }
+
+}

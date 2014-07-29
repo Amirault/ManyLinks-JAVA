@@ -1,0 +1,55 @@
+package models;
+
+import java.io.Serializable;
+
+import javax.persistence.*;
+
+/* Classe permettant de définir l'identifiant d'un bookmark
+ * L'identifiant est l'association des autres identifiant des tables associées
+ */
+@Embeddable
+public class BookmarkId implements Serializable {
+	 
+	  public long linkId;
+	 
+	  public long memberId;
+	 
+	  public long categoryId;
+	  
+	  public int hashCode() {
+	    return (int)(linkId + memberId + categoryId);
+	  }
+	 
+	  public boolean equals(Object object) {
+	    if (object instanceof BookmarkId) {
+	    	BookmarkId otherId = (BookmarkId) object;
+	      return (otherId.linkId == this.linkId) && (otherId.memberId == this.memberId)&& (otherId.categoryId == this.categoryId);
+	    }
+	    return false;
+	  }
+
+	public long getLinkId() {
+		return linkId;
+	}
+
+	public void setLinkId(long linkId) {
+		this.linkId = linkId;
+	}
+
+	public long getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(long memberId) {
+		this.memberId = memberId;
+	}
+
+	public long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(long categoryId) {
+		this.categoryId = categoryId;
+	}
+	  
+}

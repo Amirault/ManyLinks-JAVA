@@ -1,0 +1,8 @@
+<!-- ##SAMPLE LIST TOP AJOUT## -->
+#{list items:listOfLinksTopAjout, as:'favori'}
+	<tr id="bookmark-${favori.id}">
+		<td><img src="${favori.icone}" alt="icon"> <a href="${favori.url}" target="_blank">${favori.title}</a></td>
+		<td><span class="badge">${favori.cptAjout}</span></td>
+	</tr>
+#{/list}						
+<!-- ##<FIN SAMPLE LIST TOP AJOUT## -->

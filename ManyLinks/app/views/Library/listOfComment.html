@@ -1,0 +1,9 @@
+<!-- ##SAMPLE LIST COMMENTAIRE## -->
+#{list items:listOfComment, as:'comment'}
+	<div style="border-top:1px solid black">
+		<h5>${comment.member.pseudo}</h5>
+		<p class="alert alert-info">${comment.contenu}</p>
+		<p><span class="pull-right">${comment.timeStamp}</span></p>
+	</div>
+#{/list}
+<!-- ##FIN SAMPLE LIST COMMENTAIRE## -->

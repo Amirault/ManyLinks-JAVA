@@ -1,0 +1,162 @@
+#{extends 'main.html' /}
+#{if connected}
+#{include 'Library/comments.html' /}
+		<div class="EntetePrincipal"><h1>Library</h1></div>
+		<div class="row-fluid margin">
+			<!-- tableau de gauche -->
+			<div class="span3 BlockStyler padding">
+				<table class="table table-bordered table-striped table-condensed">
+					<caption>
+						<h4>Most added sites</h4>
+					</caption>
+					<thead>
+					  <tr> 
+						<th>Link</th>
+						<th>Added times</th>
+					  </tr>
+					</thead>
+					<tbody id="listOfLinksTopAjout">
+						#{include 'Library/listOfLinksTopAjout.html' /}
+					</tbody>
+			  </table>
+			</div>
+			  <!-- tableau du milieu -->
+			<div class="span6 BlockStyler padding">
+				<h4><form id="searchbox" action="#" method="get">
+					<input id="search" name="search" type="text" class="search" placeholder="Type here" data-items="4" autocomplete="off" onkeyup="liveSearch(this.value)"
+					 value="${search}"/>
+					<input id="submit" type="submit" value="Search">
+				</form></h4>
+				<div id="livesearch">
+				<table class="table table-bordered table-striped table-condensed">
+				<thead>
+				  <tr>
+					<th>Link</th>
+					<th>Comment</th>
+					<th>Vote</th>
+				  </tr>
+				</thead>
+				<tbody id="listOfLinks">
+					#{include 'Library/listOfLinks.html' /}
+				</tbody>
+				</table>				
+				</div>
+			</div>
+			<!-- tableau de droite -->
+			<div class="span3 BlockStyler padding">
+				<table class="table table-bordered table-striped table-condensed">
+				<caption><h4>Most rated sites</h4></caption>
+				<thead>
+				  <tr>
+					<th>Link</th>
+					<th>Rating</th>
+				  </tr>
+				</thead>
+				<tbody id="listOfLinksTopRate">
+					#{include 'Library/listOfLinksTopRate.html' /}
+				</tbody>
+				</table>
+			</div>
+		</div>
+#{/if}
+		<script>
+			function AddPublicLink(URL)
+			{
+				var ItemLi = document.forms['AddFavoris']['UrlFav'].value = URL;
+				$('#myModal').modal('toggle');
+			}
+			
+			$(function(){
+				// manage vote in a link
+				$(document).on("click", '.vote', function(){
+					var id =$(this).attr("id-link");
+					var val =$(this).attr("valNote");
+					
+					$.post("vote",{"id":id, "val":val},
+			            function(result,status){
+			            	if (result == "SUCCESS"){
+			            		updateLibrary();
+			            	}
+			            	else{
+			            		alert(result);
+			            	}
+			            }
+			        );
+				});
+				// display comment linked with link
+				$(document).on("click", ".comment", function(){
+					idLink = $(this).attr("id-link");
+					loadCommentsOnLink(idLink);
+					$("#comments").attr("idLink",idLink);
+					$("#comments").modal('show');
+				});
+				$("#addComment").click(function(){
+					var idLink = $("#comments").attr("idLink");
+					var commentText =$('#commentText').val();
+					$.post("setComment",{"contenu":commentText, "idLink":idLink},
+						  function(data,status){
+							  if (data == true){
+								  updateLibrary();	
+								  loadCommentsOnLink(idLink);
+								  $("#form-comment").hide();
+							  }
+						  }
+					);
+					return false;
+				});
+				function updateLibrary(){
+					// update list on a library
+					$.post( "listOfLinks", function( data ){
+					 	$("#listOfLinks").html( data );
+					 });
+					 $.post("listOfLinksTopAjout",function(data){
+					 	$("#listOfLinksTopAjout").html( data );
+					 });
+					 $.post("listOfLinksTopRate",function(data){
+					 	$("#listOfLinksTopRate").html( data );
+					 });
+				}
+				function loadCommentsOnLink(idLink){
+					// update Comment linked with current Link
+					$.post("listOfComment",{idLink:idLink},
+					  function(data,status){
+					  	if (data == "ERROR"){
+					  		alert("Error, comment not loaded...");
+					  	}
+					  	else {
+					  		$("#listOfComment").html(data);
+					  	}
+					  	 
+					  }
+					);
+				}
+				
+				$("#search").autocomplete({
+					source: function(query, process) {
+						$.ajax({
+							url: 'listOfLinksJSON',
+							dataType: "json",
+							data : {
+								keyword : query,
+								limit: 4
+								},
+							success: function(data) {
+								console.log(data);
+								return data;
+							}
+						});
+					},
+						minLength: 2
+					});
+			});
+				
+
+			function liveSearch(search)
+			{
+				$.post("listOflinks",{keyword : search},
+						  function(data,status){
+						  	$("#listOfLinks").html(data);			  	 
+						  }
+				);
+			}
+		</script>

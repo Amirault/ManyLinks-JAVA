@@ -1,0 +1,14 @@
+<!-- ##SAMPLE LIST DE LIEN## -->
+#{list items:listOfLinks, as:'favori'}
+		<tr id="bookmark-${favori.id}">
+			<td><img src=${favori.icone} alt="icon" /><a href=${favori.url} target="_blank">${favori.title}</a></td>
+			<td><span class="badge">${favori.commentList.size()}</span><button class="comment pull-right" id-link="${favori.id}"><i class="icon-edit"></i></button></td>
+			<td><span class="badge note${favori.id}	">${favori.rate}</span>
+			<div class="pull-right">
+				<button class="vote btn btn-success" id-link="${favori.id}" valNote="1"><i class="icon-black icon-arrow-up"> </i></button>
+				<button class="vote btn btn-danger" id-link="${favori.id}" valNote="-1"><i class="icon-black icon-arrow-down"> </i></button>
+			</div>
+			</td>
+		</tr>
+#{/list}
+<!-- ##FIN SAMPLE LIST DE LIEN## -->

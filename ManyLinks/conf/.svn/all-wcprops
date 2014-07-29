@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/manylinks/!svn/ver/17/Manylinks/conf
+END
+application.conf
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/manylinks/!svn/ver/17/Manylinks/conf/application.conf
+END
+dependencies.yml
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/manylinks/!svn/ver/14/Manylinks/conf/dependencies.yml
+END
+routes
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/manylinks/!svn/ver/14/Manylinks/conf/routes
+END
+messages
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/manylinks/!svn/ver/14/Manylinks/conf/messages
+END

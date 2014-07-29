@@ -1,0 +1,40 @@
+<div id="myModalModifFav" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabelModifFav" aria-hidden="true">	
+	<!-- ================== ENTETE DU FORMULAIRE ====================== -->
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		<h3 id="myModalLabelModifFav">Modify your bookmark</h3>
+	</div>
+	<!-- ============================================================== -->
+	<!-- ================== CORPS DU FORMULAIRE ====================== -->
+	<form class="form" name="ModifFavoris"  >
+		<div class="modal-body">
+			<!-- Champs de saisie de l'url : -->
+			<br />
+			<label for="URL">URL of your bookmark  :</label>							
+			<span Name="URL" class="contentPanel">
+				<p id="UrlModif"></p>
+				<input type="hidden" name="UrlFav" value="" />
+			</span>
+			<br />
+			<!-- Champs de saisie du nom du favoris ///// todo : completer automatiquement avec le vrai titre -->
+			<label for="TextName">Name :</label>
+			<input name="name" id="TextName" type="text" class="span5" placeholder="Title of your bookmark">
+			
+			<!-- Bouton radio Public / Perso -->
+			<label for="RadioButtons">Share your link ?</label>
+			<div Name="RadioButtons">
+					<table>
+						<tr><td><input type="radio" name="isPublic" id="RdPublic" value="true" checked /></td><td>Yes</td><td><input type="radio" name="isPublic" id="RdPrive" value="false" /></td><td>No</td></tr>
+					</table>
+			</div>
+			<br />
+			<br />			
+		</div>
+		<!-- =================== BAS DU FORMULAIRE ======================== -->
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<input type="submit" value="Modify" class="btn btn-success" />
+		</div>
+		<!-- ============================================================== -->
+	</form>
+</div>

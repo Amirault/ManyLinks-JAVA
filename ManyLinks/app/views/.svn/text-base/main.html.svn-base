@@ -1,0 +1,58 @@
+#{set title:'ManyLinks' /}
+#{set 'moreStyles'}
+        #{stylesheet 'bootstrap.css' /}
+        #{stylesheet 'bootstrap-responsive.min.css' /}
+        #{stylesheet 'style.css' /}
+        #{stylesheet 'menu.css' /}
+#{/set}
+#{set 'moreScripts'}
+    #{script 'jquery-1.9.1.min.js'/}
+    #{script 'jquery-ui.custom.min.js'/}
+    #{script 'bootstrap.js'/}
+    #{script 'ajax_clic.js'/}
+    #{script 'js_Mosaique.js'/}
+    #{script 'js_verif.js'/}
+#{/set}
+<!DOCTYPE html>
+<html>
+	<header>
+		<!-- ##HEADER## -->
+        <title>#{get 'title' /}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />	
+        <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
+        <!--  #SCRIPT# -->
+		#{get 'moreScripts' /}
+		<!--  #SCRIPTS# -->
+		<!--  #STYLES# -->
+		#{get 'moreStyles' /}
+		<!--  #STYLES# -->
+		<!-- ##HEADER## -->
+	</header>
+	<body>
+		<!--  ##CORPS DE LA PAGE## -->
+		<div id="EntetePrincipal" class="row-fluid">
+			<div class="span1 transparent"></div>
+			<div class="span1 transparent"></div>
+			<div class="span1 transparent"></div>
+			<div class="span1 transparent"></div>
+			<div id="titre-manylinks" class="span4 transparent">
+				<h1>ManyLinks</h1>
+				<em>Manage and Save your links!</em>
+			</div>
+			<div class="span4 transparent"></div>
+		</div>
+		#{if connected}
+			<div id="menu-general">
+				<!--  ##MENU GENERAL## -->
+				#{include 'commun/menu.html' /}
+				<!--  ##MENU GENERAL## -->
+			</div>
+		#{/if}
+		<div id="contenu-page">
+			<!--  ##CONTENU DE LA PAGE## -->
+			#{doLayout /}
+			<!--  ##CONTENU DE LA PAGE## -->
+		</div>
+		<!--  ##CORPS DE LA PAGE## -->
+	</body>
+</html>
